@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/MehediBlaze/Elite/issues"
   },
-  "homepage": "https://github.com/MehediBlaze/Elite#readme"
+  "homepage": "https://github.com/MehediBlaze/Elite#readme",
+  "dependencies": {
+    "concurrently": "^7.1.0"
+  }
 }
