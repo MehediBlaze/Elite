@@ -8,7 +8,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Deploy to Heroku
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
@@ -16,3 +25,17 @@ jobs:
           heroku_app_name: "elite-shop-backend"
           heroku_email: "mehedi.blaze@gmail.com"
           appdir: "server"
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm install
+      - name: Build Project
+        working-directory: ./client
+        run: npm run build --if-present
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: './client/build'
+          production-branch: master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
