@@ -1,0 +1,20 @@
+{
+  "name": "elite-shop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehediBlaze/Elite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MehediBlaze/Elite/issues"
+  },
+  "homepage": "https://github.com/MehediBlaze/Elite#readme"
+}
