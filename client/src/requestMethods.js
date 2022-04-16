@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:5000/api';
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNGM1ZjY0ZGM2ZmQ5ZmVhZDY0OGY4OSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0OTMwOTIwOSwiZXhwIjoxNjQ5Mzk1NjA5fQ.MEy6NbGqX-Lb-tPLme2k9hjYZ-lp_cehjpho2EuWEyY';
+const baseURL = 'https://elite-shop-backend.herokuapp.com/api';
+const user = JSON.parse(localStorage.getItem('persist:root'))?.user;
+const currentUser = user && JSON.parse(user).currentUser;
+const token = currentUser?.accessToken;
 
 export const publicRequest = axios.create({
   baseURL,

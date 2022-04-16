@@ -1,5 +1,9 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
+import { useDispatch, useSelector } from 'react-redux';
+import login from '../utils/authUtil';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Container = styled.div`
   width: 100vw;
@@ -41,7 +45,7 @@ const Input = styled.input`
 `;
 const Button = styled.button`
   width: 30%;
-  padding: 15px 20px;
+  padding: ${(props) => props.top}px 20px;
   border: none;
   color: white;
   background-color: #2f6b70;
@@ -56,14 +60,36 @@ const Link = styled.a`
 `;
 
 function Login() {
+  const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user);
+
   return (
     <Container>
       <Wrapper>
         <Title>Welcome Back</Title>
         <Form>
-          <Input placeholder="Email" />
-          <Input placeholder="Password" />
-          <Button>LOG IN</Button>
+          <Input
+            name="email"
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+            placeholder="Email"
+          />
+          <Input
+            name="password"
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+            placeholder="Password"
+          />
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              login(dispatch, formData, 'login');
+            }}
+            top={user.loading ? '7' : '15'}
+            disabled={user.loading ? true : false}
+          >
+            {user.loading ? <CircularProgress sx={{ color: 'red' }} size={30} /> : 'LOG IN'}
+          </Button>
           <Link>FORGOT PASSWORD?</Link>
           <Link>CREATE A NEW ACCOUNT</Link>
         </Form>

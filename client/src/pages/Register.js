@@ -1,5 +1,9 @@
+import { CircularProgress } from '@mui/material';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
+import register from '../utils/authUtil';
 
 const Container = styled.div`
   width: 100vw;
@@ -45,7 +49,7 @@ const Agreement = styled.span`
 `;
 const Button = styled.button`
   width: 30%;
-  padding: 15px 20px;
+  padding: ${(props) => props.top}px 20px;
   border: none;
   color: white;
   background-color: #2f6b70;
@@ -54,21 +58,60 @@ const Button = styled.button`
 `;
 
 function Register() {
+  const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.password !== formData.conPassword) {
+      console.error('password mismatch');
+    } else {
+      register(dispatch, formData, 'register');
+    }
+  };
+
+  const user = useSelector((state) => state.user);
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-          <Input placeholder="First Name" />
-          <Input placeholder="Last Name" />
-          <Input placeholder="Email" />
-          <Input placeholder="Password" />
-          <Input placeholder="Confirm Password" />
+          <Input
+            name="firstName"
+            placeholder="First Name"
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+          />
+          <Input
+            name="lastName"
+            placeholder="Last Name"
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+          />
+          <Input
+            name="email"
+            placeholder="Email"
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+          />
+          <Input
+            name="password"
+            placeholder="Password"
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+          />
+          <Input
+            name="conPassword"
+            placeholder="Confirm Password"
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+          />
           <Agreement>
             By creating an account, I consent to the processing of my personal data in accordance
             with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button
+            top={user.loading ? '7' : '15'}
+            disabled={user.loading ? true : false}
+            onClick={handleSubmit}
+          >
+            {user.loading ? <CircularProgress sx={{ color: 'red' }} size={30} /> : 'CREATE'}
+          </Button>
         </Form>
       </Wrapper>
     </Container>
